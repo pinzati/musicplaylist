@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in</title>
+</head>
+<body>
+    <div th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+    <div th:if="${registrationSuccess != null}">
+   <!-- <div th:if="${registrationSuccess}" class="success">-->
+        <p>Registration successful! You can now log in.</p>
+    </div>
+    <form th:action="@{/login}" method="post">
+        <div><label>Username: <input type="text" name="username" /></label></div>
+        <div><label>Password: <input type="password" name="password" /></label></div>
+        <div><input type="submit" value="Sign in" class="btn btn-default active" role="button" /></div>
+        <div><a th:href="@{'/register'}">Register</a></div>
+        <div><a th:href="@{'/playlistlist'}">Continue without signing in</a></div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Of Playlists</title>
+</head>
+
+<body>
+    <div>
+        <h1>Playlists</h1>
+    </div>
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <h3>Signed in as: <span sec:authentication="name"></span></h3>
+    </div>
+    <div class="col-md-4" style="padding:30px 0">
+        <form th:action="@{/logout}" method="post" th:if="${#authorization.expression('isAuthenticated()')}">
+            <input type="submit" class="btn btn-default active" role="button" value="Sign out" />
+        </form>
+        <a href="/login" class="btn btn-default active" role="button" th:unless="${#authorization.expression('isAuthenticated()')}">Sign in</a>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody font>
+        <tr th:each="playlist : ${playlists}">
+            <td th:text="${playlist.name}"></td>
+            <td><a th:href="@{/showplaylist/{playlistid}(playlistid=${playlist.playlistid})}" class="btn btn-success active" role="button">Show Playlist</a></td>
+            <td th:if="${#authorization.expression('isAuthenticated()')} and ${currentUser == playlistCreators[playlist.name]}">
+                <a th:href="@{'/deleteplaylist/' + ${playlist.playlistid}}" class="btn btn-danger active" role="button">Delete Playlist</a>
+            </td>
+            <td sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{'/delete/' + ${playlist.playlistid}}" class="btn btn-danger active" role="button">Delete Playlist</a>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <a href="/add" th:if="${#authorization.expression('isAuthenticated()')}" class="btn btn-primary active" role="button">Add Playlist</a>
+</body>
+
+</html>

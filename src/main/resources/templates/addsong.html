@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Song</title>
+</head>
+<body>
+    <h1>Add A Song To A Playlist: <span th:text="${playlistName}"></span></h1>
+
+    <div th:if="${error}" class="error">
+        <p th:text="${error}"></p>
+    </div>
+
+    <form action="#" th:action="@{/savesong}" th:object="${newsong}" method="post">
+        <p>Name: <input type="text" th:field="*{name}" /></p>
+        <p>Duration: <input type="text" th:field="*{duration}" /> (e.g., 2.35)</p>
+        <p>Artist: <input type="text" name="artistName" /></p>
+        <input type="hidden" name="playlistid" th:value="${playlistid}" />
+        <p><input type="submit" value="Save" class="btn btn-success active" role="button" /></p>
+    </form>    
+
+    <a th:href="@{'/showplaylist/' + ${playlistid}}" class="btn btn-danger active" role="button">Back to Playlist</a>
+</body>
+</html>

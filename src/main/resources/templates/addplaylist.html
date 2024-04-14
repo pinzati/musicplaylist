@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlsn:th="https://www.thymeleaf.org">
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Playlist</title>
+</head>
+<body>
+    <h1>Make a new playlist</h1>
+    <form action="#" th:action="@{/add}" th:object="${playlist}" method="post">
+        <p>Name: <input type="text" th:field="*{name}" /></p>
+        <p><input type="submit" value="Save Playlist" class="btn btn-success active" role="button" /></p>
+        <a href="/playlistlist" class="btn btn-danger active" role="button">Back</a>
+    </form>
+</body>
+</html>

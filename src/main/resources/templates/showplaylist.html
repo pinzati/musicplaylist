@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist</title>
+</head>
+
+<body>
+    <p th:text="'Current User: ' + ${currentUser}"></p>
+    <p th:if="${#authorization.expression('isAuthenticated()')}" th:text="'Playlist Creator: ' + ${playlistCreators[playlist.name]}"></p>
+    <h1> Playlist:
+        <span th:each="playlist : ${playlists}" th:text="${playlist.name}"></span>
+    </h1>
+    <div th:if="${songs.size() > 0}">
+        <h3>All Songs</h3>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Artist</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="song : ${songs}">
+                <td th:text="${song.name}"></td>
+                <td th:text="${song.artist.artistName}"></td>
+                <td th:text="${song.duration} + ' min'"></td>
+                <td th:if="${#authorization.expression('isAuthenticated()')} and ${currentUser == playlistCreators[playlist.name]} or ${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <a th:href="@{'/deletesong/' + ${playlist.playlistid} + '/' + ${song.songid}}" class="btn btn-danger active" role="button">Delete Song</a>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <a href="/playlistlist" class="btn btn-danger active" role="button">Back</a>
+    <a th:if="${#authorization.expression('isAuthenticated()')} and ${currentUser == playlistCreators[playlist.name]}"
+    th:href="@{/addsong/{playlistid}(playlistid=${playlistid})}" 
+    class="btn btn-primary active">Add Song</a>
+   <!-- <a sec:authorize="hasAuthority('ADMIN')"
+    th:href="@{/addsongadmin/{playlistid}(playlistid=${playlistid})}" 
+    class="btn btn-primary active">Add Song</a>-->
+    <div th:if="${param.songExists}">
+        <p>The song you tried to add was already in the playlist.</p>
+    </div>
+</body>
+
+</html>
